@@ -1,28 +1,14 @@
-import React, { useEffect } from 'react';
-import cityApi from './api/cityApi';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import LoginPage from './features/auth/pages/LoginPage';
-import { AdminLayout } from './components/Layout';
 import { NotFound, PrivateRoutes } from './components/Common';
-import { useAppDispatch } from './app/hooks';
-import { Button } from '@mui/material';
-import { authActions } from './features/auth/authSlice';
+import { AdminLayout } from './components/Layout';
+import LoginPage from './features/auth/pages/LoginPage';
 
 
 
 function App() {
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    cityApi.getAll().then(response => console.log(response));
-  });
-
-  return (
+   return (
     <>
-    <Button variant ='contained' color='primary' onClick={() => dispatch(authActions.logout())}>
-      Đăng Xuất
-    </Button>
      <div>
         <Switch>
           <Route path= "/login">

@@ -1,4 +1,4 @@
-export interface Student {
+export interface Lover {
     id?: string;
     name: string;
     age: number;

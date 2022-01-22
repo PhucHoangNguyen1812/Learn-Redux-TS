@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         minHeight:"100vh",
    },
-
    box: {
         padding: space,
 
@@ -36,7 +35,7 @@ export default function LoginPage () {
     
     return <div className= {classes.root}>
         <Paper elevation={1} className= {classes.box}>
-            <Typography variant='h5' component='h1'>Quản Lý Sinh Viên</Typography>
+            <Typography variant='h5' component='h1'>Quản Lý Người Yêu</Typography>
 
             <Box mt={4}>
                 <Button fullWidth variant="contained" color= "primary" onClick={handleLoginClick}>
