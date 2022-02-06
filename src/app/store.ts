@@ -5,12 +5,13 @@ import authReducer from '../features/auth/authSlice';
 import dashboardReducer from '../features/dashboard/dashboardSlice';
 import { history } from '../utils';
 import rootSaga from './rootSaga';
-
+import loverReducer from '../features/lover/loverSlice'
 
 const rootReducer = combineReducers({
   router: connectRouter(history),
   auth: authReducer,
   dashboard: dashboardReducer,
+  lover : loverReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware();

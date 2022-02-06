@@ -13,7 +13,8 @@ export interface DashboardStatistics {
 
 export interface RankingByCity {
     cityId : string;
-    rackingList: Lover[];
+    cityName: string;
+    rankingList: Lover[];
 }
 
 export interface DashboardState {
@@ -73,6 +74,7 @@ export const selectDashboardStatistics = (state : RootState) => state.dashboard.
 export const selectHighestLoverList = (state : RootState) => state.dashboard.highestLoverList;
 export const selectLowestLoverList = (state : RootState) => state.dashboard.lowestLoverList;
 export const selectRankingByCityList = (state : RootState) => state.dashboard.rankingByCityList;
-export const dashboardReducer = dashboardSlice.reducer;
 
+
+const dashboardReducer = dashboardSlice.reducer;
 export default dashboardReducer;

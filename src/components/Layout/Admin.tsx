@@ -9,8 +9,8 @@ import { Header, Sidebar } from '../Common';
 
 const theme = createTheme();
 const light = theme.palette.primary.light;
-const spacingmain = theme.spacing(2,3);
-const spacingsb = theme.spacing(0.2,0.2);
+const spacingMain = theme.spacing(2,3);
+const spacingSb = theme.spacing(0.2,0.2);
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
     sidebar: {
         gridArea: 'sidebar',
         borderRight: `1px solid ${light}`,
-        padding: spacingsb
+        padding: spacingSb,
     },
     main: {
         gridArea: 'main',
-        padding: spacingmain,
+        padding: spacingMain,
     },
 }))
 
