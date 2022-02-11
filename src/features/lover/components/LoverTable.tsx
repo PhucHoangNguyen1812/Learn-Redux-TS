@@ -1,9 +1,9 @@
-import { Button, createTheme, Paper } from '@mui/material';
+import { Box,Button, createTheme, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Table, TableCell, TableContainer, TableRow, TableHead, TableBody } from '@mui/material'
 import React from 'react';
-import { ThemeContext } from '@emotion/react';
-import { Lover } from '../../../models';
+import { Lover, City } from '../../../models';
+import {capitalizeString, getMarkColor} from '../../../utils';
 
 const theme = createTheme();
 
@@ -17,11 +17,14 @@ const useStyles = makeStyles(() => ({
 
 export interface LoverTableProps {
     loverList: Lover[];
+    cityMap: {
+        [key: string]: City;
+    };
     onEdit?: (lover: Lover) => void;
     onRemove?: (lover: Lover) => void;
 }
 
-export default function LoverTable({ loverList, onEdit, onRemove }: LoverTableProps) {
+export default function LoverTable({ loverList, cityMap, onEdit, onRemove }: LoverTableProps) {
     const classes = useStyles();
     return (
         <TableContainer component={Paper}>
@@ -40,23 +43,27 @@ export default function LoverTable({ loverList, onEdit, onRemove }: LoverTablePr
                 <TableBody>
                     {loverList.map((lover) => (
                         <TableRow key={lover.id}>
-                            <TableCell>{lover.id}</TableCell>
+                            <TableCell width={310}>{lover.id}</TableCell>
                             <TableCell>{lover.name}</TableCell>
-                            <TableCell>{lover.gender}</TableCell>
-                            <TableCell>{lover.mark}</TableCell>
-                            <TableCell>{lover.city}</TableCell>
+                            <TableCell>{capitalizeString(lover.gender)}</TableCell>
+                            <TableCell>
+                                <Box color={getMarkColor(lover.mark)} fontWeight="bold">
+                                    {lover.mark}
+                                </Box>
+                            </TableCell>
+                            <TableCell>{cityMap[lover.city]?.name}</TableCell>
                             <TableCell align="right">
                                 <Button
-                                    className={classes.edit}
-                                    variant="contained"
+                                    size="small"
+                                    className={classes.edit}        
                                     color="primary"
                                     onClick={() => onEdit?.(lover)}
                                 >
-                                    Edit
+                                    Sửa
                                 </Button>
 
-                                <Button variant="outlined" color="secondary" onClick={() => onRemove?.(lover)}>
-                                    Remove
+                                <Button size="small" color="secondary" onClick={() => onRemove?.(lover)}>
+                                    Xoá
                                 </Button>
                             </TableCell>
                         </TableRow>

@@ -6,12 +6,14 @@ import dashboardReducer from '../features/dashboard/dashboardSlice';
 import { history } from '../utils';
 import rootSaga from './rootSaga';
 import loverReducer from '../features/lover/loverSlice'
+import cityReducer from '../features/city/citySlice';
 
 const rootReducer = combineReducers({
   router: connectRouter(history),
   auth: authReducer,
   dashboard: dashboardReducer,
   lover : loverReducer,
+  city: cityReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware();

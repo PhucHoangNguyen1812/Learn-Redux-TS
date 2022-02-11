@@ -2,7 +2,7 @@ import { ListParams, ListResponse } from './../../models/common';
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Lover } from '../../models';
 import loverApi from '../../api/loverApi';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, debounce} from 'redux-saga/effects';
 import { loverActions } from './loverSlice';
 
 function* fetchLoverList(action: PayloadAction<ListParams>) {
@@ -19,6 +19,11 @@ function* fetchLoverList(action: PayloadAction<ListParams>) {
     }
 }
 
+function* handleSearchDebounce(action: PayloadAction<ListParams>) {
+    yield put (loverActions.setFilter(action.payload));
+}
+
 export default function* loverSaga() {
     yield takeLatest (loverActions.fetchLoverList, fetchLoverList);
+    yield debounce (500, loverActions.setFilterWithDebounce.type, handleSearchDebounce);
 }

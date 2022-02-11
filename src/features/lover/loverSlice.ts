@@ -8,8 +8,8 @@ import { ListParams, PaginationParams, ListResponse } from '../../models/common'
 export interface LoverState {
     loading : boolean;
     list: Lover[];
-    filter?: ListParams;
-    pagination?: PaginationParams;
+    filter: ListParams;
+    pagination: PaginationParams;
 }
 
 const initialState: LoverState = {
@@ -45,6 +45,8 @@ const loverSlice = createSlice ({
         setFilter(state, action: PayloadAction<ListParams>) {
             state.filter = action.payload;
         },
+
+        setFilterWithDebounce(state, action: PayloadAction<ListParams>) {},
     },
 });
 

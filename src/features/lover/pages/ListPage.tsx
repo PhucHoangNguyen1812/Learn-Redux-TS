@@ -1,16 +1,29 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { Box, Typography, Button, createTheme } from '@mui/material';
+import { Box, Typography, Button, createTheme, LinearProgress, Pagination } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import StudentTable from '../components/LoverTable'
-import { selectLoverList, loverActions} from '../loverSlice'
 import LoverTable from '../components/LoverTable';
+import { selectCityMap,selectCityList } from '../../city/citySlice';
+import { ListParams } from '../../../models';
+import LoverFilters from '../components/LoverFilters';
+import {
+    selectLoverLoading,
+    selectLoverFilter,
+    selectLoverList,
+    selectLoverPagination,
+    loverActions,
+} from '../loverSlice'
+
+
 
 const theme = createTheme();
 
 const useStyles = makeStyles(() => ({
 
-  root: {},
+  root: {
+    position: 'relative',
+    paddingTop : theme.spacing(1),
+  },
 
   titleContainer: {
     display: 'flex',
@@ -21,6 +34,12 @@ const useStyles = makeStyles(() => ({
     marginBottom: theme.spacing(4),
   },
 
+  loading: {
+    position: 'absolute',
+    top: theme.spacing(-1),
+    width: '100%',
+  },
+
 }));
 
 
@@ -28,21 +47,42 @@ const useStyles = makeStyles(() => ({
 export default function ListPage() {
 
   const loverList = useAppSelector(selectLoverList);
+  const pagination = useAppSelector(selectLoverPagination);
+  const loading = useAppSelector(selectLoverLoading);
+  const filter = useAppSelector(selectLoverFilter);
+  const cityMap = useAppSelector(selectCityMap);
+  const cityList = useAppSelector(selectCityList);
   const classes = useStyles();
 
   const dispatch = useAppDispatch();
 
+
   useEffect(() => {
+    dispatch(loverActions.fetchLoverList(filter));
+  },[dispatch,filter]);
+
+  const handlePageChange = (e: any, page: number) => {
     dispatch(
-      loverActions.fetchLoverList({
-        _page: 1,
-        _limit: 15,
+      loverActions.setFilter({
+        ...filter,
+        _page: page,
       })
     );
-  }, [dispatch]);
+  };
 
+  const handleSearchChange = (newFilter: ListParams) => {
+    dispatch(loverActions.setFilterWithDebounce(newFilter));
+  };
+
+  const handleFilterChange = (newFilter: ListParams) => {
+    dispatch(loverActions.setFilter(newFilter))
+  };
+
+  
   return (
     <Box className={classes.root}>
+      {loading && <LinearProgress className={classes.loading} />}
+
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Lovers</Typography>
 
@@ -51,10 +91,24 @@ export default function ListPage() {
         </Button>
       </Box>
 
-      {/* StudentTable */}
-      <LoverTable loverList={loverList} />
+      <Box mb={3}>
+        <LoverFilters
+          filter={filter}
+          cityList={cityList}
+          onChange={handleFilterChange}
+          onSearchChange={handleSearchChange}
+        />
+      </Box>
+      <LoverTable loverList={loverList} cityMap= {cityMap}/>
 
-      {/* Pagination */}
+      <Box my= {2} display = "flex" justifyContent="center">
+        <Pagination
+          color = "primary"
+          count={Math.ceil(pagination?._totalRows / pagination?._limit)}
+          page= {pagination._page}
+          onChange= {handlePageChange}
+        />
+      </Box>
     </Box>
   );
 
