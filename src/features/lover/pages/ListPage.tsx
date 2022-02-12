@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { Box, Typography, Button, createTheme, LinearProgress, Pagination } from '@mui/material';
+import { Box, Typography, Button, createTheme, LinearProgress, Pagination,} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import LoverTable from '../components/LoverTable';
 import { selectCityMap,selectCityList } from '../../city/citySlice';
-import { ListParams } from '../../../models';
+import { ListParams,Lover } from '../../../models';
 import LoverFilters from '../components/LoverFilters';
 import {
     selectLoverLoading,
@@ -13,7 +13,8 @@ import {
     selectLoverPagination,
     loverActions,
 } from '../loverSlice'
-
+import LoverApi from '../../../api/loverApi';
+import {Link, useHistory, useRouteMatch} from 'react-router-dom'
 
 
 const theme = createTheme();
@@ -45,6 +46,9 @@ const useStyles = makeStyles(() => ({
 
 
 export default function ListPage() {
+
+  const match = useRouteMatch();
+  const history = useHistory();
 
   const loverList = useAppSelector(selectLoverList);
   const pagination = useAppSelector(selectLoverPagination);
@@ -78,7 +82,21 @@ export default function ListPage() {
     dispatch(loverActions.setFilter(newFilter))
   };
 
-  
+  const handleRemoveLover = async (lover: Lover) => {
+    try {
+      await LoverApi.remove(lover?.id || '');
+
+      const newFilter = {...filter};
+
+    }catch(error) {
+      console.log ('Lỗi đến từ Lover', error);
+    }
+  };
+
+  const handleEditLover = async (lover: Lover) => {
+    history.push(`${match.url}/${lover.id}`);
+  };
+
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -86,9 +104,11 @@ export default function ListPage() {
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Lovers</Typography>
 
-        <Button variant="contained" color="primary">
-          Thêm Mới
-        </Button>
+        <Link to= {`${match.url}/add`} style= {{textDecoration: 'none'}}>
+          <Button variant="contained" color="primary">
+            Thêm Mới
+          </Button>
+        </Link>
       </Box>
 
       <Box mb={3}>
@@ -99,7 +119,12 @@ export default function ListPage() {
           onSearchChange={handleSearchChange}
         />
       </Box>
-      <LoverTable loverList={loverList} cityMap= {cityMap}/>
+
+      <LoverTable 
+        loverList={loverList} 
+        cityMap= {cityMap} 
+        onRemove= {handleRemoveLover}
+        onEdit= {handleEditLover}/>
 
       <Box my= {2} display = "flex" justifyContent="center">
         <Pagination

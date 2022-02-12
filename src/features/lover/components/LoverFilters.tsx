@@ -101,7 +101,7 @@ export default function LoverFilters({
             />
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={2.5}>
           <FormControl variant="outlined" size="small" fullWidth>
             <InputLabel id="filterByCity">Tìm Kiếm Thành Phố</InputLabel>
             <Select
@@ -144,14 +144,15 @@ export default function LoverFilters({
           </FormControl>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={1}>
+        <Grid item xs={12} md={6} lg={1.5}>
           <Button
             variant="outlined"
             color="primary"
+            size = "medium"
             fullWidth
             onClick={handleClearFilter}
           >
-            Clear
+            Làm Mới
           </Button>
         </Grid>
       </Grid>
