@@ -15,7 +15,7 @@ import {
 } from '../loverSlice'
 import LoverApi from '../../../api/loverApi';
 import {Link, useHistory, useRouteMatch} from 'react-router-dom'
-
+import {toast} from 'react-toastify'
 
 const theme = createTheme();
 
@@ -88,6 +88,8 @@ export default function ListPage() {
 
       const newFilter = {...filter};
 
+      toast.success('Xoá thành công');
+
     }catch(error) {
       console.log ('Lỗi đến từ Lover', error);
     }
@@ -102,7 +104,7 @@ export default function ListPage() {
       {loading && <LinearProgress className={classes.loading} />}
 
       <Box className={classes.titleContainer}>
-        <Typography variant="h4">Lovers</Typography>
+        <Typography variant="h4">Danh Sách</Typography>
 
         <Link to= {`${match.url}/add`} style= {{textDecoration: 'none'}}>
           <Button variant="contained" color="primary">

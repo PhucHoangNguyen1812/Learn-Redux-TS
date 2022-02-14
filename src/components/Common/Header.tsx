@@ -20,7 +20,7 @@ export function Header() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign:'center' }}>
             Quản Lý Người Yêu
           </Typography>
-          <Button color="inherit" onClick={handleLogoutClick}>Logout</Button>
+          <Button color="inherit" onClick={handleLogoutClick}>Đăng Xuất</Button>
         </Toolbar>
       </AppBar>
     </Box>

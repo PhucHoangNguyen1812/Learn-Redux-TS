@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {Box , Typography} from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams,useHistory } from 'react-router-dom';
 import { Lover } from '../../../models';
 import LoverApi from '../../../api/loverApi';
 import { ChevronLeft } from '@mui/icons-material';
 import LoverForm from '../components/LoverForm';
+import {toast} from 'react-toastify'
 
 export default function AddEditPage() {
   
+  const history = useHistory();
   const {loverId} = useParams<{loverId: string}>();
   const isEdit = Boolean(loverId);
   const [lover, setLover] = useState<Lover>();
@@ -26,8 +28,14 @@ export default function AddEditPage() {
     })();
   },[loverId]);
 
-  const handleLoverFormSubmit = (formValues: Lover ) => {
-    
+  const handleLoverFormSubmit = async (formValues: Lover ) => {
+    if(isEdit) {
+      await LoverApi.update(formValues);
+    } else {
+      await LoverApi.add(formValues);
+    }
+    toast.success('Lưu thành công');
+    history.push('/admin/nguoi-yeu')
   };
 
   const initialValues: Lover = {
@@ -41,7 +49,7 @@ export default function AddEditPage() {
 
   return (
       <Box>
-        <Link to= "/admin/lovers">
+        <Link to= "/admin/nguoi-yeu">
           <Typography variant="caption" style= {{display: "flex",alignItems: "center"}}>
               <ChevronLeft /> Trở Lại
           </Typography>
